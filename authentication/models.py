@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
-from django.utils.translation import ugettext_lazy as _
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class CustomUserManager(BaseUserManager):
@@ -29,4 +31,12 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    pass
+    username = models.CharField(max_length=30, unique=True)
+    email = models.CharField(max_length=100, unique=True)
+    phone_number = PhoneNumberField(null=False, unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'phone_number']
+
+    def __str__(self) -> str:
+        return f"User: {self.email}"
