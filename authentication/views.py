@@ -3,8 +3,13 @@ from rest_framework import generics, response, status
 from . import serializers
 
 
-class CreateUserApiView(generics.CreateAPIView):
+class CreateUserApiView(generics.GenericAPIView):
     serializer_class = serializers.UserSerializer
 
-    def get(self, request):
-        return response.Response('Hello there', status=status.HTTP_200_OK)
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return response.Response(serializer.errors, status=status.HTTP_200_OK)

@@ -1,7 +1,9 @@
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 
-from .models import User
+# from .models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,9 +17,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'phone_number', 'password']
 
     def validate(self, attrs):
-        is_user = User.objects.filter(attrs['username']).exists()
-        is_email = User.objects.filter(attrs['email']).exists()
-        is_phone = User.objects.filter(attrs['phone_number']).exists()
+        is_user = User.objects.filter(username = attrs['username']).exists()
+        is_email = User.objects.filter(email = attrs['email']).exists()
+        is_phone = User.objects.filter(phone_number = attrs['phone_number']).exists()
 
         if is_user: raise serializers.ValidationError(detail="User already exists")
         if is_email: raise serializers.ValidationError(detail="Email already exists")
