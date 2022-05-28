@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # PIP INSTALLS
     'rest_framework',
     'drf_yasg',
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [

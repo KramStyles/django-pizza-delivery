@@ -24,3 +24,9 @@ class CustomUserManager(BaseUserManager):
 
         if not extra_fields.get('is_active'):
             raise ValueError(_("Superuser should be active"))
+
+        return self.create_user(email, password, **extra_fields)
+
+
+class User(AbstractUser):
+    pass
