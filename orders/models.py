@@ -21,7 +21,7 @@ class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     size = models.CharField(max_length=20, choices=SIZES, default='SMALL')
     order_status = models.CharField(max_length=20, choices=ORDER_STATUS, default='PENDING')
-    quality = models.IntegerField()
+    quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
