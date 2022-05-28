@@ -10,6 +10,7 @@ class CreateUserApiView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
+            serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return response.Response(serializer.errors, status=status.HTTP_200_OK)
