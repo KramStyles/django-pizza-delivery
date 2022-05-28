@@ -41,4 +41,4 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self) -> str:
-        return f"User: {self.email}"
+        return f"User: {self.username.title()}"
