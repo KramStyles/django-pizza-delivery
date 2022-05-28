@@ -8,7 +8,7 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError(_("Email is required!"))
 
-        email = self.normalize_email(email) # Changes the case of the domain part of the email
+        email = self.normalize_email(email)  # Changes the case of the domain part of the email
         new_user = self.model(email=email, **extra_fields)
 
         new_user.set_password(password)
@@ -17,4 +17,10 @@ class CustomUserManager(BaseUserManager):
         return new_user
 
     def create_superuser(self, email, password, **extra_fields):
-        pass
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        # extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_active', False)
+
+        if not extra_fields.get('is_active'):
+            raise ValueError(_("Superuser should be active"))
