@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, response, status
 
 from .serializers import OrderSerializer
@@ -31,8 +32,14 @@ class OrderListCreateAPIView(generics.GenericAPIView):
 
 
 class OrderDetailView(generics.GenericAPIView):
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, order_id):
-        pass
+        order = get_object_or_404(Order, pk=order_id)
+        serializer = self.serializer_class(instance=order)
+
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, order_id):
         pass
