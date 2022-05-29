@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework import generics, response, status
 
-# Create your views here.
+from .serializers import OrderSerializer
+
+
+class OrderListCreateApiView(generics.GenericAPIView):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
