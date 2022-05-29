@@ -27,4 +27,5 @@ class OrderStatusUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['order_status']
+        fields = ['id', 'order_status', 'size']
+        read_only_fields = ['size']
