@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, response, status
 
-from .serializers import OrderSerializer, OrderDetailSerializer
+from . import serializers
 from .models import Order
 
 
@@ -10,7 +10,7 @@ from .models import Order
 #     queryset = Order.objects.all()
 
 class OrderListCreateAPIView(generics.GenericAPIView):
-    serializer_class = OrderSerializer
+    serializer_class = serializers.OrderSerializer
     queryset = Order.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
@@ -32,7 +32,7 @@ class OrderListCreateAPIView(generics.GenericAPIView):
 
 
 class OrderDetailView(generics.GenericAPIView):
-    serializer_class = OrderDetailSerializer
+    serializer_class = serializers.OrderDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, order_id):
@@ -44,10 +44,10 @@ class OrderDetailView(generics.GenericAPIView):
     def put(self, request, order_id):
         order = get_object_or_404(Order, pk=order_id)
         serializer = self.serializer_class(data=request.data, instance=order)
-        
+
         if serializer.is_valid():
             serializer.save()
-            
+
             return response.Response(data=serializer.data, status=status.HTTP_202_ACCEPTED)
         return response.Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -56,3 +56,13 @@ class OrderDetailView(generics.GenericAPIView):
         order.delete()
 
         return response.Response(data='Deleted', status=status.HTTP_204_NO_CONTENT)
+
+
+class OrderStatusUpdateAPIView(generics.RetrieveUpdateAPIView):
+    serializer_class = serializers.OrderStatusUpdateSerializer
+    queryset = Order.objects.all()
+
+    # def get(self, request, pk):
+    #     order = get_object_or_404(Order, pk=pk)
+    #     serializer = self.serializer_class(instance=order)
+    #     return response.Response(data=serializer.data, status=status.HTTP_200_OK)

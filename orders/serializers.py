@@ -20,3 +20,11 @@ class OrderDetailSerializer(OrderSerializer):
 
     OrderSerializer.Meta.fields.extend(['created_at', 'updated_at'])
     # OrderSerializer.Meta.fields = '__all__'
+
+
+class OrderStatusUpdateSerializer(serializers.ModelSerializer):
+    order_status = serializers.ChoiceField(choices=Order.ORDER_STATUS)
+
+    class Meta:
+        model = Order
+        fields = ['order_status']
