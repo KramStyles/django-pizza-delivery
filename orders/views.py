@@ -1,4 +1,4 @@
-from rest_framework import generics, response, status
+from rest_framework import generics, permissions, response, status
 
 from .serializers import OrderSerializer
 from .models import Order
@@ -11,6 +11,7 @@ from .models import Order
 class OrderListCreateAPIView(generics.GenericAPIView):
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         orders = Order.objects.all()
@@ -23,7 +24,7 @@ class OrderListCreateAPIView(generics.GenericAPIView):
 
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(customer=request.user)
 
             return response.Response(data=serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -133,8 +133,10 @@ AUTH_USER_MODEL = 'authentication.User'
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'errors',  # Changed non field to errors
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication'
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
 
