@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, response, status
 
-from .serializers import OrderSerializer
+from .serializers import OrderSerializer, OrderDetailSerializer
 from .models import Order
 
 
@@ -32,7 +32,7 @@ class OrderListCreateAPIView(generics.GenericAPIView):
 
 
 class OrderDetailView(generics.GenericAPIView):
-    serializer_class = OrderSerializer
+    serializer_class = OrderDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, order_id):
