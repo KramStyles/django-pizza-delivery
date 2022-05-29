@@ -4,7 +4,7 @@ from .models import Order
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    size = serializers.CharField(max_length=20)
+    size = serializers.ChoiceField(choices=Order.SIZES)
     order_status = serializers.HiddenField(default='PENDING')
     quantity = serializers.IntegerField()
 
