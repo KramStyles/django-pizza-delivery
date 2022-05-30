@@ -15,7 +15,7 @@ User = get_user_model()
 class OrderListCreateAPIView(generics.GenericAPIView):
     serializer_class = serializers.OrderSerializer
     queryset = Order.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         orders = Order.objects.all()
@@ -36,7 +36,7 @@ class OrderListCreateAPIView(generics.GenericAPIView):
 
 class OrderDetailView(generics.GenericAPIView):
     serializer_class = serializers.OrderDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
 
     def get(self, request, order_id):
         order = get_object_or_404(Order, pk=order_id)

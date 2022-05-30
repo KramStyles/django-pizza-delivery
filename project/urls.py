@@ -22,9 +22,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
+        title="Pizza Delivery API",
         default_version='v1',
-        description="Test description",
+        description="A DRF API for delivering pizza",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="kramstyles@outlook.com"),
         license=openapi.License(name="MIT License"),
@@ -42,7 +42,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls.jwt')),
 
     # SWAGGER DOCUMENTATION
-    path('swagger.json', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('docs.json', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

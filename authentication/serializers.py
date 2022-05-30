@@ -26,3 +26,10 @@ class UserSerializer(serializers.ModelSerializer):
         if is_phone: raise serializers.ValidationError(detail='Phone already exists')
 
         return super().validate(attrs)
+
+    def create(self, validated_data):
+        new_user = User.objects.create(**validated_data)
+        new_user.set_password(validated_data['password'])
+
+        new_user.save()
+        return new_user
