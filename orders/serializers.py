@@ -19,8 +19,9 @@ class OrderDetailSerializer(OrderSerializer):
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
 
-    OrderSerializer.Meta.fields.extend(['created_at', 'updated_at'])
-    # OrderSerializer.Meta.fields = '__all__'
+    # OrderSerializer.Meta.fields.extend(['created_at', 'updated_at'])
+    del OrderSerializer.Meta.fields
+    OrderSerializer.Meta.exclude = ['customer']
 
 
 class OrderStatusUpdateSerializer(serializers.ModelSerializer):

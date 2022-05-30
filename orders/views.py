@@ -5,6 +5,8 @@ from rest_framework import generics, permissions, response, status
 from . import serializers
 from .models import Order
 
+User = get_user_model()
+
 
 # class OrderListCreateApiView(generics.ListCreateAPIView):
 #     serializer_class = OrderSerializer
@@ -77,9 +79,18 @@ class UserOrderView(generics.GenericAPIView):
         if user_id.isdigit():
             orders = Order.objects.filter(customer_id=user_id)
         else:
-            User = get_user_model()
             user = get_object_or_404(User, username=user_id)
             orders = Order.objects.filter(customer=user)
         serializer = self.serializer_class(instance=orders, many=True)
+
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class UserOrderDetailView(UserOrderView):
+    def get(self, request, user_id, order_id):
+        user = get_object_or_404(User, pk=user_id)
+
+        order = Order.objects.filter(customer=user).filter(pk=order_id)
+        serializer = self.serializer_class(instance=order, many=True)
 
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
