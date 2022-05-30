@@ -31,5 +31,5 @@ class UserSerializer(serializers.ModelSerializer):
         new_user = User.objects.create(**validated_data)
         new_user.set_password(validated_data['password'])
 
-        # new_user.save()
+        new_user.save()
         return new_user
