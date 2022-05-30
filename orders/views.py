@@ -66,3 +66,14 @@ class OrderStatusUpdateAPIView(generics.RetrieveUpdateAPIView):
     #     order = get_object_or_404(Order, pk=pk)
     #     serializer = self.serializer_class(instance=order)
     #     return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class UserOrderView(generics.GenericAPIView):
+    serializer_class = serializers.OrderDetailSerializer
+    queryset = Order.objects.all()
+
+    def get(self, request, user_id):
+        orders = Order.objects.filter(customer_id=user_id)
+        serializer = self.serializer_class(instance=orders, many=True)
+
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
