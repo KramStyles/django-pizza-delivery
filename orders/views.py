@@ -1,8 +1,11 @@
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, response, status
 
 from . import serializers
 from .models import Order
+
+User = get_user_model()
 
 
 # class OrderListCreateApiView(generics.ListCreateAPIView):
@@ -66,3 +69,28 @@ class OrderStatusUpdateAPIView(generics.RetrieveUpdateAPIView):
     #     order = get_object_or_404(Order, pk=pk)
     #     serializer = self.serializer_class(instance=order)
     #     return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class UserOrderView(generics.GenericAPIView):
+    serializer_class = serializers.OrderDetailSerializer
+    queryset = Order.objects.all()
+
+    def get(self, request, user_id):
+        if user_id.isdigit():
+            orders = Order.objects.filter(customer_id=user_id)
+        else:
+            user = get_object_or_404(User, username=user_id)
+            orders = Order.objects.filter(customer=user)
+        serializer = self.serializer_class(instance=orders, many=True)
+
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class UserOrderDetailView(UserOrderView):
+    def get(self, request, user_id, order_id):
+        user = get_object_or_404(User, pk=user_id)
+
+        order = Order.objects.filter(customer=user).filter(pk=order_id)
+        serializer = self.serializer_class(instance=order, many=True)
+
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)

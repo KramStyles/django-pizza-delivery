@@ -5,12 +5,13 @@ from .models import Order
 
 class OrderSerializer(serializers.ModelSerializer):
     size = serializers.ChoiceField(choices=Order.SIZES)
-    order_status = serializers.HiddenField(default='PENDING')
+    # order_status = serializers.HiddenField(default='PENDING')
     quantity = serializers.IntegerField()
 
     class Meta:
         model = Order
         fields = ['size', 'quantity', 'order_status']
+        read_only_fields = ['order_status']
 
 
 class OrderDetailSerializer(OrderSerializer):
@@ -18,8 +19,9 @@ class OrderDetailSerializer(OrderSerializer):
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
 
-    OrderSerializer.Meta.fields.extend(['created_at', 'updated_at'])
-    # OrderSerializer.Meta.fields = '__all__'
+    # OrderSerializer.Meta.fields.extend(['created_at', 'updated_at'])
+    del OrderSerializer.Meta.fields
+    OrderSerializer.Meta.exclude = ['customer']
 
 
 class OrderStatusUpdateSerializer(serializers.ModelSerializer):
